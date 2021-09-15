@@ -1,0 +1,22 @@
+{
+  "name": "pins_chat",
+  "version": "1.0.0",
+  "description": "Pins 채팅 서버",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hadacorp/Pins_chat.git"
+  },
+  "author": "bangjinhyuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hadacorp/Pins_chat/issues"
+  },
+  "homepage": "https://github.com/hadacorp/Pins_chat#readme",
+  "dependencies": {
+    "socket.io": "^4.2.0"
+  }
+}
