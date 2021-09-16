@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/hadacorp/Pins_chat#readme",
   "dependencies": {
+    "dotenv": "^10.0.0",
+    "mysql": "^2.18.1",
     "socket.io": "^4.2.0"
   }
 }

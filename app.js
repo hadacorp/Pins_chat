@@ -5,16 +5,20 @@ const server = http.createServer(app)
 var host = 'localhost';
 var port = 3001;
 const io = require('socket.io')(server)
+const db = require("./config/db");
+const insertModel = require("./model/insertModel");
 
 // 소켓 연결 코드
 io.sockets.on('connection', (socket) => {
   console.log(`Socket connected : ${socket.id}`)
-
+  
   // 채팅방 입장
   socket.on('enter', (data) => {
     const roomData = JSON.parse(data)
     const username = roomData.username
     const roomNumber = roomData.roomNumber
+
+    const getUser = insertModel.addEnter(roomNumber,12,"bbangi",new Date());
 
     socket.join(`${roomNumber}`)
     console.log(`[Username : ${username}] entered [room number : ${roomNumber}]`)
