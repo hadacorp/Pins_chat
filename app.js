@@ -13,21 +13,28 @@ io.sockets.on('connection', (socket) => {
   console.log(`Socket connected : ${socket.id}`)
   
   // 채팅방 입장
-  socket.on('enter', (data) => {
+  socket.on('enter', async (data) => {
     const roomData = JSON.parse(data)
-    const username = roomData.username
+    const usernickname = roomData.username
     const roomNumber = roomData.roomNumber
+    const userid = roomData.userid
 
-    const getUser = insertModel.addEnter(roomNumber,12,"bbangi",new Date());
-
-    socket.join(`${roomNumber}`)
-    console.log(`[Username : ${username}] entered [room number : ${roomNumber}]`)
-    
-    const enterData = {
-      type : "ENTER",
-      content : `${username} entered the room`  
+    try{
+      const getUser = await insertModel.addEnter(roomNumber,new Date(),userid,usernickname);
+      console.log(getUser)
+      socket.join(`${roomNumber}`)
+      console.log(`[Username : ${usernickname}] entered [room number : ${roomNumber}]`)
+      
+      const enterData = {
+        type : "ENTER",
+        content : `${usernickname} entered the room`  
+      }
+      socket.broadcast.to(`${roomNumber}`).emit('update', JSON.stringify(enterData))
+    }catch(error){
+      console.error(error);
     }
-    socket.broadcast.to(`${roomNumber}`).emit('update', JSON.stringify(enterData))
+    
+
   })
 
   // 채팅방 나가기
