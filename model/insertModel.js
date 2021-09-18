@@ -22,7 +22,16 @@ class insertModel{
         });
     }
 
-    
+    static addMessage(uuid, date, userid, usernickname,data) {
+        return new Promise((resolve, reject) => {
+            db.chatdb.query(addChatQuery, [uuid, "Message", 12, data, date], (err,data) => {
+                if(err) reject(err);
+                resolve(true);
+            });
+        });
+    }
+
+
 
 }
 module.exports = insertModel;

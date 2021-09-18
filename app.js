@@ -61,10 +61,16 @@ io.sockets.on('connection', (socket) => {
   })
 
   // 메세지 입력시 
-  socket.on('Message', (data) => {
+  socket.on('Message', async (data) => {
     const messageData = JSON.parse(data)
-    console.log(`[Room Number ${messageData.to}] ${messageData.from} : ${messageData.content}`)
-    socket.broadcast.to(`${messageData.to}`).emit('update', JSON.stringify(messageData))
+    try{
+      const insertChat = await insertModel.addMessage(messageData.to,new Date(),messageData.userid,messageData.username,messageData.content);
+      console.log(insertChat)
+      console.log(`[Room Number ${messageData.to}] ${messageData.from} : ${messageData.content}`)
+      socket.broadcast.to(`${messageData.to}`).emit('update', JSON.stringify(messageData))
+    }catch(error){
+      console.error(error);
+    }
   })
  // 이미지 전송시
   socket.on('Image', (data) => {
