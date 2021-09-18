@@ -20,8 +20,8 @@ io.sockets.on('connection', (socket) => {
     const userid = roomData.userid
 
     try{
-      const getUser = await insertModel.addEnter(roomNumber,new Date(),userid,usernickname);
-      console.log(getUser)
+      const insertChat = await insertModel.addEnter(roomNumber,new Date(),userid,usernickname);
+      console.log(insertChat)
       socket.join(`${roomNumber}`)
       console.log(`[Username : ${usernickname}] entered [room number : ${roomNumber}]`)
       
@@ -38,20 +38,28 @@ io.sockets.on('connection', (socket) => {
   })
 
   // 채팅방 나가기
-  socket.on('left', (data) => {
+  socket.on('left', async (data) => {
     const roomData = JSON.parse(data)
-    const username = roomData.username
+    const usernickname = roomData.username
     const roomNumber = roomData.roomNumber
+    const userid = roomData.userid
 
-    socket.leave(`${roomNumber}`)
-    console.log(`[Username : ${username}] left [room number : ${roomNumber}]`)
+    try{
+      const insertChat = await insertModel.addLeft(roomNumber,new Date(),userid,usernickname);
+      console.log(insertChat)
+      socket.leave(`${roomNumber}`)
+      console.log(`[Username : ${usernickname}] left [room number : ${roomNumber}]`)
 
-    const leftData = {
-      type : "LEFT",
-      content : `${username} left the room`  
+      const leftData = {
+        type : "LEFT",
+        content : `${usernickname} left the room`  
+      }
+      socket.broadcast.to(`${roomNumber}`).emit('update', JSON.stringify(leftData))
+    }catch(error){
+      console.error(error);
     }
-    socket.broadcast.to(`${roomNumber}`).emit('update', JSON.stringify(leftData))
   })
+
   // 메세지 입력시 
   socket.on('Message', (data) => {
     const messageData = JSON.parse(data)
