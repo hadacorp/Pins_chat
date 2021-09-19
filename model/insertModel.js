@@ -22,9 +22,18 @@ class insertModel{
         });
     }
 
-    static addMessage(uuid, date, userid, usernickname,data) {
+    static addMessage(uuid, date, userid,data) {
         return new Promise((resolve, reject) => {
             db.chatdb.query(addChatQuery, [uuid, "Message", 12, data, date], (err,data) => {
+                if(err) reject(err);
+                resolve(true);
+            });
+        });
+    }
+
+    static addImage(uuid, date, userid,imageUrl) {
+        return new Promise((resolve, reject) => {
+            db.chatdb.query(addChatQuery, [uuid, "Image", 12, imageUrl, date], (err,data) => {
                 if(err) reject(err);
                 resolve(true);
             });

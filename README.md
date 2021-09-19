@@ -9,7 +9,7 @@ Pins 채팅 서버
 
 ## chat type
 * enter 참가 
-* left 이탈
+* left 퇴장
 * message 메시지 전송
 * image 이미지 전송
 * pin 핀 전송
@@ -43,7 +43,24 @@ Pins 채팅 서버
 |data|VARCHAR|전송 메시지 or image url or 입장 퇴장 알림 메시지|
 |date|DATETIME|메시지 시간|
 
+## 채팅 정보 전송 Entity
 
+* 채팅방 입장, 퇴장용 roomData
+
+    |Key|Datatype|Explanation|
+    |------|---|---|
+    |username|String|유저 닉네임|
+    |roomNumber|String|채팅방 고유 UUID|
+    |userid|Long|유저 id|
+
+* 메시지 전송, 이미지 전송 용 messageData
+
+    |Key|Datatype|Explanation|
+    |------|---|---|
+    |from|String|유저 닉네임|
+    |to|String|채팅방 고유 UUID|
+    |userid|Long|유저 id|
+    |content|String|메시지 내용 또는 이미지 Url|
 
 
 ## 이슈
@@ -51,3 +68,4 @@ Pins 채팅 서버
 * 클라이언트를 백그라운드로 계속 유지 해야 하는가? => 백그라운드 유지시 클라이언트의 소모되는 배터리 및 메모리 多
 * 만약 백그라운드로 유지하지 않을때 소켓을 언제 열고 닫을것인가?? + 언제 메시지 데이터를 가져올 것인가? => 메시지 알림 불가,,
 * 서버에 메시지 저장시 저장 기간은?  => 서버에 메시지 몽땅 저장시 서버 자원 소모 多
+* 핀전송은 기획 내용에 따라 개발 예정

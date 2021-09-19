@@ -64,7 +64,7 @@ io.sockets.on('connection', (socket) => {
   socket.on('Message', async (data) => {
     const messageData = JSON.parse(data)
     try{
-      const insertChat = await insertModel.addMessage(messageData.to,new Date(),messageData.userid,messageData.username,messageData.content);
+      const insertChat = await insertModel.addMessage(messageData.to,new Date(),messageData.userid,messageData.content);
       console.log(insertChat)
       console.log(`[Room Number ${messageData.to}] ${messageData.from} : ${messageData.content}`)
       socket.broadcast.to(`${messageData.to}`).emit('update', JSON.stringify(messageData))
@@ -72,11 +72,18 @@ io.sockets.on('connection', (socket) => {
       console.error(error);
     }
   })
+
  // 이미지 전송시
   socket.on('Image', (data) => {
     const messageData = JSON.parse(data)
-    console.log(`[Room Number ${messageData.to}] ${messageData.from} : ${messageData.content}`)
-    socket.broadcast.to(`${messageData.to}`).emit('update', JSON.stringify(messageData))
+    try{
+      const insertChat = await insertModel.addMessage(messageData.to,new Date(),messageData.userid,messageData.content);
+      console.log(insertChat)
+      console.log(`[Room Number ${messageData.to}] ${messageData.from} : ${messageData.content}`)
+      socket.broadcast.to(`${messageData.to}`).emit('update', JSON.stringify(messageData))
+    }catch(error){
+      console.error(error);
+    }
   })
   // 소켓 연결 끊기
   socket.on('disconnect', () => {
